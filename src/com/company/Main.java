@@ -19,7 +19,7 @@ public class Main {
 
         System.out.println();
         System.out.println("/* -------------------- Task3 ------------------ */");
-        Task3 task3 = new Task3("assets/task3.txt");
+        Task3 task3 = new Task3("assets/task3-2.txt");
         System.out.println();
         System.out.println("Graphs count: " + task3.getGraphsCount());
     }

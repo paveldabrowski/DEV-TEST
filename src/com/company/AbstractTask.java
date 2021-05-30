@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 
 abstract class AbstractTask {
 
-    String[] getDataFromFile( String path, String taskName ){
-        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path))) ) {
+    String[] getDataFromFile(String path, String taskName) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path)))) {
             return reader.readLine().split(" ");
         } catch (IOException e) {
             System.err.println("File not found. Provide correct path to input file in " + taskName + ".");

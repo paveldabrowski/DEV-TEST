@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class Task3 extends AbstractTask {
+class Task3 extends AbstractTask {
 
     private final String TASK_NAME = "Task 3";
     private final List<int[]> inputPairs = new ArrayList<>();
@@ -27,6 +27,7 @@ public class Task3 extends AbstractTask {
             }
             Comparator<int[]> comparator = Comparator.comparingInt(o -> o[0]);
             inputPairs.sort(comparator);
+            printInputPairs(inputPairs);
         } catch (IOException e) {
             System.err.println("File not found. Provide correct path to input file in " + TASK_NAME + ".");
             System.exit(1);
@@ -37,6 +38,10 @@ public class Task3 extends AbstractTask {
             System.err.println("Input String cannot be parsed to Integer.Task 3 input is wrong.");
             System.exit(1);
         }
+    }
+
+    private void printInputPairs(List<int[]> inputPairs) {
+        inputPairs.forEach(ints -> System.out.println(Arrays.toString(ints)));
     }
 
     int getGraphsCount() {
@@ -51,7 +56,7 @@ public class Task3 extends AbstractTask {
             while (j < size){
                 int[] secondPair = inputPairs.get(j);
                 int[] lastPair = pairs.get(pairs.size() - 1);
-                if (lastPair[1] == secondPair[0]) {
+                if (lastPair[1] == secondPair[0] || lastPair[0] == secondPair[0]) {
                     pairs.add(secondPair);
                     j++;
                     i++;
