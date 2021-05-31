@@ -12,12 +12,19 @@ public class Task2 extends AbstractTask {
 
     void printPairs() {
         int[] ints = convertToSortedIntegerArray();
-        int arrayLength = ints.length;
-        for (int i = 0; i < arrayLength; i++) {
-            for (int j = i + 1; j < arrayLength; j++) {
-                if (i != j && ints[i] + ints[j] == 13) {
-                    System.out.println("" + ints[i] + " " + ints[j]);
-                }
+        int left = 0;
+        int right = ints.length - 1;
+        while(left < right) {
+            int sum = ints[left] + ints[right];
+            if (sum == 13) {
+                System.out.printf("(%d, %d)", ints[left], ints[right]);
+                System.out.println();
+                left = left + 1;
+                right = right - 1;
+            } else if (sum < 13) {
+                left = left + 1;
+            } else {
+                right = right - 1;
             }
         }
     }
