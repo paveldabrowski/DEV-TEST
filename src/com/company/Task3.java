@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 class Task3 extends AbstractTask {
 
@@ -43,26 +42,44 @@ class Task3 extends AbstractTask {
     }
 
     int getGraphsCount() {
-        List<List<int[]>> graphs = new ArrayList<>();
+        List<Set<int[]>> graphs = new ArrayList<>();
         int inputPairsSize = inputPairs.size();
         for (int i = 0; i < inputPairsSize; i++) {
             int[] newPair = inputPairs.get(i);
             if (graphs.stream().anyMatch(graph -> graph.contains(newPair)))
                 continue;
 
-            List<int[]> graph = new ArrayList<>(List.of(newPair));
+            Set<int[]> graph = new HashSet<>(List.of(newPair));
             int j = i + 1;
             while (j < inputPairsSize) {
                 int[] nextPair = inputPairs.get(j);
-                Predicate<int[]> predicate = pair -> !graph.contains(nextPair) && (pair[1] == nextPair[0]
-                        || pair[0] == nextPair[0] || pair[1] == nextPair[1] || pair[0] == nextPair[1]);
-                boolean edgeMatchesToGraph = graph.stream().anyMatch(predicate);
-                if (edgeMatchesToGraph)
-                    graph.add(nextPair);
+                addConnectedPairsToFirstPair(graph, nextPair);
                 j++;
             }
-            graphs.add(graph);
+            checkConnectionBetweenPreviousGraphs(graph, graphs);
         }
         return graphs.size();
+    }
+
+    private void addConnectedPairsToFirstPair(Set<int[]> graph, int[] nextPair) {
+        Predicate<int[]> predicate = pair -> !graph.contains(nextPair) && (
+                        pair[1] == nextPair[0] ||
+                        pair[0] == nextPair[1] ||
+                        pair[0] == nextPair[0] ||
+                        pair[1] == nextPair[1]
+        );
+        boolean edgeMatchesToGraph = graph.stream().anyMatch(predicate);
+        if (edgeMatchesToGraph)
+            graph.add(nextPair);
+    }
+
+    private void checkConnectionBetweenPreviousGraphs(Set<int[]> graph, List<Set<int[]>> graphs) {
+        Optional<Set<int[]>> connectedGraph = graphs.stream()
+                .filter(previousGraph -> graph.stream().anyMatch(previousGraph::contains))
+                .findFirst();
+        if (connectedGraph.isPresent())
+            connectedGraph.get().addAll(graph);
+        else
+            graphs.add(graph);
     }
 }
